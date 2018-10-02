@@ -17,6 +17,22 @@ class ProfesionalVinculado {
 	
 	method universidad() { return universidad }
 	method universidad(univ) { universidad = univ }
+	
+	method provinciasDondePuedeTrabajar(){return #{universidad.provincia()}}
+	
+	method honorariosPorHora() { return universidad.honorariosRecomendados()}
+	
+}
+
+class ProfesionalAsociadoDelLitoral {
+	var universidad
+	
+	method universidad() { return universidad }
+	method universidad(univ) { universidad = univ }
+	
+	method provinciasDondePuedeTrabajar() { return #{"Entre Ríos", "Corrientes", "Santa Fe"} }
+	
+	method honorariosPorHora() { return 3000 }
 }
 
 
@@ -24,6 +40,10 @@ class ProfesionalVinculado {
 class ProfesionalLibre {
 	var universidad
 	
+	var property honorariosPorHora
+		
+	var property provinciasDondePuedeTrabajar= #{}
+		
 	method universidad() { return universidad }
 	method universidad(univ) { universidad = univ }
 }

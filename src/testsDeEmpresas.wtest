@@ -1,0 +1,88 @@
+import empresas.*
+import profesionales.*
+import universidades.*
+describe "Tests San Martin"{
+	//empresa
+	var empresa= new Empresa()
+	//Universidades
+		var sanMartin= new Universidad()
+		var rosario= new Universidad()
+		var corrientes= new Universidad()
+		var hurlingham= new Universidad()
+	
+	//profesionales
+		var juana= new ProfesionalVinculado()
+		var melina= new ProfesionalAsociadoDelLitoral()
+		var rocio= new ProfesionalLibre()
+		var luciana= new ProfesionalLibre()
+	
+	fixture{
+		//UNIVERSIDADES
+		//San Martin
+		sanMartin.provincia("Buenos Aires")
+		sanMartin.honorariosRecomendados(3500)
+		
+		//Rosario
+		rosario.provincia("Santa Fe")
+		rosario.honorariosRecomendados(2800)
+		
+		//Corrientes
+		corrientes.provincia("Corrientes")
+		corrientes.honorariosRecomendados(4200)
+		
+		//Hurlingham
+		hurlingham.provincia("Buenos Aires")
+		hurlingham.honorariosRecomendados(8800)
+		
+		//PROFESIONALES
+		//Juana
+		juana.universidad(rosario)
+		
+		//Melina
+		melina.universidad(corrientes)
+		
+		//Rocio
+		rocio.universidad(hurlingham)
+		rocio.honorariosPorHora(5000)
+		rocio.provinciasDondePuedeTrabajar(#{"Santa Fe","Cordoba","Buenos Aires"})
+		
+		//Luciana
+		luciana.universidad(rosario)
+		luciana.honorariosPorHora(3200)
+		luciana.provinciasDondePuedeTrabajar(#{"Santa Fe","Entre Rios"})
+		
+		//EMPRESA
+		empresa.contratar(juana)
+		empresa.contratar(melina)
+		empresa.contratar(rocio)
+		empresa.contratar(luciana)
+		empresa.honorariosReferencia(3500)
+	}
+ test "Test Profesionales caros" {
+
+	assert.that(empresa.profesionalesCaros().size()==1)
+	assert.that( empresa.profesionalesCaros().contains(rocio) )
+
+ }
+ 
+ test "Universidades Formadoras"{
+ 	assert.equals(#{rosario,corrientes,hurlingham}, empresa.universidadesFormadoras() )
+ }
+ 
+ test "Test Profesional Mas Barato "{
+ 	assert.equals(juana,empresa.profesionalMasBarato())
+ }
+ 
+ test "Test provincias Cubiertas"{
+ 	assert.equals(true, empresa.provinciaEstaCubierta("Santa Fe"))
+ 	assert.equals(true, empresa.provinciaEstaCubierta("Cordoba"))
+ 	assert.equals(false, empresa.provinciaEstaCubierta("Misiones"))
+ }
+ 
+ test "Test Cuantos estudiaron en"{
+ 	assert.equals(2,empresa.cuantosProfesionalesEstudiaronEn(rosario))
+ 	assert.equals(1,empresa.cuantosProfesionalesEstudiaronEn(hurlingham))
+ 	assert.equals(0,empresa.cuantosProfesionalesEstudiaronEn(sanMartin))
+ }
+
+}
